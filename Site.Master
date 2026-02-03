@@ -1,0 +1,298 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="EduCorePro.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduCorePro</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <style>
+        .navbar-custom { background-color: #1a2238; }
+        .dropdown-toggle::after { display: none !important; }
+
+        .search-wrapper { position: relative; width: 100%; max-width: 600px; }
+        .search-input { width: 100%; border-radius: 20px; border: none; padding: 10px 45px 10px 20px; outline: none; }
+        .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #6c757d; cursor: pointer; }
+
+        .theme-switch { position: relative; display: inline-block; width: 45px; height: 22px; margin-right: 15px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(23px); }
+
+        .btn-outline-custom { border: 1px solid rgba(255,255,255,0.6); color: white; border-radius: 20px; padding: 4px 25px; font-size: 0.9rem; }
+        .btn-outline-custom:hover { background-color: white; color: #1a2238; }
+
+        .offcanvas { background-color: #f8f9fa; } 
+        .offcanvas-header { border-bottom: 1px solid #dee2e6; background-color: #e9ecef; }
+        .cart-item {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 15px; }
+        body.dark-mode { 
+            background-color: #121212 !important; 
+            color: #ffffff !important; 
+        }
+          
+        body.dark-mode [style*="background-color: #f8f9fa"], 
+        body.dark-mode [style*="background-color: #e9ecef"],
+        body.dark-mode .bg-light, 
+        body.dark-mode .bg-white { 
+            background-color: #1e1e1e !important; 
+            color: #fff !important; 
+            border: none !important;
+        }
+
+        body.dark-mode [style*="color: #1a2238"],
+        body.dark-mode .text-dark,
+        body.dark-mode h2, body.dark-mode h5, body.dark-mode p, body.dark-mode label {
+            color: #ffffff !important;
+        }
+        body.dark-mode .offcanvas,
+        body.dark-mode .offcanvas-header,
+        body.dark-mode .card:not(.bg-primary):not(.bg-success):not(.bg-warning), 
+        body.dark-mode .cart-item {
+            background-color: #1e1e1e !important;
+            color: #fff !important;
+            border-color: #333 !important;
+        }
+        body.dark-mode .form-control {
+            background-color: #333 !important;
+            border-color: #555 !important;
+            color: #fff !important;
+        }
+        body.dark-mode .form-control::placeholder { color: #aaa !important; }
+
+        body.dark-mode .dropdown-menu {
+            background-color: #2c2c2c !important;
+            border-color: #444 !important;
+        }
+        body.dark-mode .dropdown-item {
+            color: #e0e0e0 !important;
+        }
+        body.dark-mode .dropdown-item:hover {
+            background-color: #444 !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .alert-danger {
+            background-color: #3e0a0f !important; 
+            color: #ffcccc !important; 
+            border-color: #842029 !important;
+        }
+        body.dark-mode .bg-primary { background-color: #0d6efd !important; color: white !important; }
+        body.dark-mode .bg-success { background-color: #198754 !important; color: white !important; }
+        body.dark-mode .bg-warning { background-color: #ffc107 !important; color: black !important; }
+
+        body.dark-mode .rounded-circle.bg-white { background-color: #2c2c2c !important; }
+        body.dark-mode .navbar-custom { background-color: #1a2238 !important; } 
+        body.dark-mode .text-muted { color: #aaa !important; }
+        body.dark-mode .btn-close { filter: invert(1); }
+    </style>
+</head>
+<body class="bg-light" id="mainBody">
+    
+    <form id="form1" runat="server">
+
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-2">
+            <div class="container">
+                
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand fw-bold fs-4 me-4" href="Courses.aspx">
+                        <i class="fas fa-graduation-cap me-2"></i>EduCorePro
+                    </a>
+                    
+                    <div class="dropdown">
+                        <a class="text-white text-decoration-none fw-bold dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Kategoriler
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="Courses.aspx?Category=Yazilim">Yazılım</a></li>
+                            <li><a class="dropdown-item" href="Courses.aspx?Category=Veritabani">Veritabanı</a></li>
+                            <li><a class="dropdown-item" href="Courses.aspx?Category=Dil">Dil Eğitimi</a></li>
+                            <li><a class="dropdown-item" href="Courses.aspx?Category=">Tümü</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mx-auto d-none d-lg-block w-50">
+                    <div class="search-wrapper mx-auto">
+                        <input type="text" id="txtSearch" class="search-input" placeholder="Kurs ara..." onkeydown="searchOnEnter(event)" autocomplete="off">
+                        <i class="fas fa-search search-icon" onclick="doSearch()"></i>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    
+                    <label class="theme-switch mt-1">
+                        <input type="checkbox" onclick="toggleTheme()">
+                        <span class="slider"></span>
+                    </label>
+                    
+                    <% if (Session["Role"] != null && Session["Role"].ToString() != "Admin") { %>
+                        <button class="btn text-white position-relative me-3 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sepetPanel">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <asp:Label ID="lblSepetAdet" runat="server" CssClass="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" Visible="false" style="font-size: 0.6rem;"></asp:Label>
+                        </button>
+                    <% } %>
+
+                    <% if (Session["User"] == null) { %>
+                        <a class="btn btn-outline-custom" href="Login.aspx">Giriş</a>
+                    <% } else { %>
+                        <div class="dropdown">
+                            <a class="btn btn-outline-custom dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <%= Session["User"] %>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                
+                                <% if (Session["Role"] != null && Session["Role"].ToString() == "Admin") { %>
+                                    <li><a class="dropdown-item" href="AdminPanel.aspx"><i class="fas fa-cogs me-2"></i>Admin Paneli</a></li>
+                                <% } else { %>
+                                    <li><button type="button" class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#profilePanel"><i class="fas fa-user-circle me-2"></i>Profilim</button></li>
+                                <% } %>
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <asp:LinkButton ID="lnkCikis" runat="server" CssClass="dropdown-item text-danger" OnClick="btnCikis_Click"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</asp:LinkButton>
+                                </li>
+                            </ul>
+                        </div>
+                    <% } %>
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="container d-lg-none mt-2">
+            <input type="text" class="form-control rounded-pill" placeholder="Kurs ara..." autocomplete="off">
+        </div>
+
+        <div class="container body-content mt-4" style="min-height: 80vh;">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <footer class="text-white text-center py-4 mt-5" style="background-color: #1a2238;">
+            <p class="mb-0">&copy; <%: DateTime.Now.Year %> - EduCorePro - Rozerin Oflas</p>
+        </footer>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="sepetPanel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title fw-bold"><i class="fas fa-shopping-basket me-2"></i>Sepetim</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                
+                <asp:Repeater ID="rptSepet" runat="server" OnItemCommand="rptSepet_ItemCommand">
+                    <ItemTemplate>
+                        <div class="cart-item">
+                            <img src="<%# Eval("Resim") %>" alt="kurs">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 fw-bold text-dark" style="font-size: 0.9rem;"><%# Eval("Baslik") %></h6>
+                                <small class="text-primary fw-bold"><%# Eval("Fiyat") %> TL</small>
+                            </div>
+                            <asp:LinkButton ID="btnSil" runat="server" CommandName="Sil" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm text-danger ms-2">
+                                <i class="fas fa-trash"></i>
+                            </asp:LinkButton>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+
+                <asp:Label ID="lblBosSepet" runat="server" CssClass="text-center d-block mt-5 text-muted" Text="Sepetiniz şu an boş." Visible="false"></asp:Label>
+
+                <asp:Panel ID="pnlSepetOzet" runat="server" Visible="false" CssClass="mt-auto border-top pt-3">
+                     <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Toplam:</span>
+                        <span class="fw-bold text-primary fs-5"><asp:Label ID="lblToplamTutar" runat="server"></asp:Label> TL</span>
+                    </div>
+                    <a href="Cart.aspx" class="btn btn-dark w-100 fw-bold">Sepeti Onayla</a>
+                </asp:Panel>
+
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="profilePanel">
+            <div class="offcanvas-header bg-primary text-white">
+                <h5 class="offcanvas-title fw-bold"><i class="fas fa-user-edit me-2"></i>Hesap Ayarları</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                
+                <div class="text-center mb-4">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center border border-3 border-primary" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user fa-3x text-primary"></i>
+                    </div>
+                    <h6 class="mt-2 fw-bold"><%= Session["User"] %></h6>
+                    <span class="badge bg-success">Öğrenci</span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">E-Posta Adresi</label>
+                    <asp:TextBox ID="txtProfilEmail" runat="server" CssClass="form-control" placeholder="E-posta" autocomplete="off"></asp:TextBox>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Yeni Şifre</label>
+                    <asp:TextBox ID="txtProfilSifre" runat="server" CssClass="form-control" TextMode="Password" placeholder="******" autocomplete="new-password"></asp:TextBox>
+                    <div class="form-text small">Değiştirmek istemiyorsanız boş bırakın.</div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <asp:Button ID="btnProfilGuncelle" runat="server" Text="Bilgileri Güncelle" CssClass="btn btn-primary fw-bold" OnClick="btnProfilGuncelle_Click" />
+                    <hr />
+                    <asp:Button ID="btnHesapSil" runat="server" Text="Hesabımı Sil" CssClass="btn btn-outline-danger btn-sm" OnClick="btnHesapSil_Click" OnClientClick="return confirm('Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz!');" />
+                </div>
+                
+                <asp:Label ID="lblProfilMesaj" runat="server" Visible="false" CssClass="mt-3 d-block text-center fw-bold"></asp:Label>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (localStorage.getItem("theme") === "dark") {
+                document.getElementById("mainBody").classList.add("dark-mode");
+                var toggleInput = document.querySelector(".theme-switch input");
+                if (toggleInput) toggleInput.checked = true;
+            }
+        });
+
+        function toggleTheme() {
+            var body = document.getElementById("mainBody");
+            body.classList.toggle("dark-mode");
+            if (body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+            } else {
+                localStorage.setItem("theme", "light");
+            }
+        }
+
+        function doSearch() {
+            var val = document.getElementById("txtSearch").value;
+            window.location.href = "Courses.aspx?q=" + encodeURIComponent(val);
+        }
+        function searchOnEnter(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                doSearch();
+            }
+        }
+    </script>
+</body>
+</html>
